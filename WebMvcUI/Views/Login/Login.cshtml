@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+@model User
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#show_password').hover(function show() {
+            //Change the attribute to text
+            $('#txtPassword').attr('type', 'text');
+            $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+        },
+            function () {
+                //Change the attribute back to password
+                $('#txtPassword').attr('type', 'password');
+                $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            });
+        //CheckBox Show Password
+        $('#ShowPassword').click(function () {
+            $('#Password').attr('type', $(this).is(':checked') ? 'text' : 'password');
+        });
+    });
+</script>
+
+<!--Login view ekranında şifre görüntüleme işlemi yapıldı -->
+
+<br />
+
+<div class="row" style="margin-top: 50px;">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="panel panel-default panel-info">
+                <div class="panel-heading text-center col-lg-11">
+                    <h3>Giriş Yap</h3>
+                </div>
+                <br />
+                <div class="alert alert-info">
+                    <div style="margin-bottom:15px;">Admin kullanıcısı için giriş bilgileri:</div>
+                    <div>Email: admin@@admin.com</div>
+                    <div>Şifre: 12345678 </div>
+                </div>
+                <br />
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">
+                        <span>@ViewBag.ErrorMessage</span>
+                    </div>
+                }
+                <div class="panel-body">
+                    <form id="userForm" asp-action="Login">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <input type="email" asp-for="Email" id="mail" class="form-control" placeholder="E-posta adresi giriniz..." />
+                            <br />
+                        </div>
+                        <span asp-validation-for="Email" id="mail_error" class="text-danger"></span>
+                        <br />
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input type="password" id="txtPassword" asp-for="Password" class="form-control" placeholder="Parola giriniz..." />
+                            <br />
+
+                            <asp:TextBox ID="txtPassword2" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox>
+                            <div class="input-group-append">
+                                <button id="show_password" class="btn btn-primary" type="button">
+                                    <span class="fa fa-eye-slash icon"></span>
+                                </button>
+                            </div>
+                            <br />
+                        </div>
+                        <span asp-validation-for="Password" id="txtPassword_error" class="text-danger"></span>
+                        <br />
+                        <input type="submit" id="Password" onclick="mailPwControl()" class="btn btn-success btn-block p-2" style="min-width: 100%;" asp-controller="Login" asp-action="Login" name="name" value="Giriş Yap" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model WebMvcUI.Models.Entities.Concrete.User
+
+@{
+    ViewData["Title"] = "İşten Çıkarma";
+}
+
+
+<h5 class="my-4">Kullanıcıyı işten çıkarmak istiyor musunuz?</h5>
+
+<form asp-action="Termination" asp-controller="Admin" method="post">
+    @{
+        DateTime terminationDate = DateTime.Now;
+
+        string terminationYear = terminationDate.Year.ToString();
+        string terminationMonth = terminationDate.Month.ToString();
+        string terminationDay = terminationDate.Day.ToString();
+
+        if (Convert.ToInt32(terminationMonth) < 10) terminationMonth = "0" + terminationMonth;
+        if (Convert.ToInt32(terminationDay) < 10) terminationDay = "0" + terminationDay;
+
+        string minTerminate = terminationYear + "-" + terminationMonth + "-" + terminationDay;
+
+        if (Model.HireDate.Date > DateTime.Now.Date)
+            terminationDate = Model.HireDate.AddMonths(1);
+
+        else
+            terminationDate = DateTime.Now.AddMonths(1);
+
+        terminationYear = terminationDate.Year.ToString();
+        terminationMonth = terminationDate.Month.ToString();
+        terminationDay = terminationDate.Day.ToString();
+
+        if (Convert.ToInt32(terminationMonth) < 10) terminationMonth = "0" + terminationMonth;
+        if (Convert.ToInt32(terminationDay) < 10) terminationDay = "0" + terminationDay;
+
+        string maxTerminate = terminationYear + "-" + terminationMonth + "-" + terminationDay;
+    }
+    <label asp-for="TerminationDate" class="control-label mb-2"></label>
+    <div class="col-md-6 pl-0">
+        <input asp-for="TerminationDate" class="form-control" type="date" min="@minTerminate" max="@maxTerminate" onkeydown="return false" />
+        <span class="text-danger">@ViewBag.error</span>
+        <br />
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" href="/Admin/Termination/@Model.Id" value="İŞTEN ÇIKAR" class="btn btn-danger btn-block" />
+    </div>
+
+</form>
+
